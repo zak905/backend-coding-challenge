@@ -7,7 +7,6 @@ Git related tasks for gulp build
 var package = require("./package.json");
 var config = require("./config.js");
 var gulp = require("gulp");
-var git = require("gulp-git");
 var del = require("del");
 var settings = require("./settings.js");
 
