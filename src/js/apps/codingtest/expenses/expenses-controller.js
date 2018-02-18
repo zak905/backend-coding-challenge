@@ -24,17 +24,24 @@ app.controller("ctrlExpenses", ["$rootScope", "$scope", "config", "restalchemy",
 		dateFormat: "dd/mm/yy"
 	};
 
+	$scope.currencies = ["GBP", "EUR"];
+
+	$scope.currency = $scope.currencies[0];
+
+	$scope.displayCurrency = $scope.currencies[0];
+
 	var loadExpenses = function() {
 		// Retrieve a list of expenses via REST
-		restExpenses.get().then(function(expenses) {
+		restExpenses.get({currency: $scope.displayCurrency}).then(function(expenses) {
 			$scope.expenses = expenses;
 		});
+
 	}
 
 	$scope.saveExpense = function() {
 		if ($scope.expensesform.$valid) {
 			// Post the expense via REST
-			restExpenses.post($scope.newExpense).then(function() {
+			restExpenses.post($scope.newExpense, {currency: $scope.currency}).then(function() {
 				// Reload new expenses list
 				loadExpenses();
 			});
@@ -44,6 +51,27 @@ app.controller("ctrlExpenses", ["$rootScope", "$scope", "config", "restalchemy",
 	$scope.clearExpense = function() {
 		$scope.newExpense = {};
 	};
+
+	$scope.currencyChanged = function() {
+		loadExpenses();
+	};
+
+	$scope.updateVat = function() {
+		$scope.newExpense.vat = parseFloat(Number($scope.newExpense.amount) * 0.2).toFixed(2) ;
+	};
+
+	$scope.getCurrencySymbol = function() {
+		switch($scope.displayCurrency) {
+		  case "GBP":
+		  return "£";
+		  	break;
+		  case "EUR":
+		  return "€";
+		  break;
+		  
+		}
+	};
+
 
 	// Initialise scope variables
 	loadExpenses();
