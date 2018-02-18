@@ -22,6 +22,8 @@ COPY . /app
 
 WORKDIR app
 
+COPY nginx.conf /etc/nginx/nginx.conf
+
 RUN gulp dev
 
 RUN cp -a static/. /usr/share/nginx/html
