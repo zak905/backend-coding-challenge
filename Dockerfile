@@ -20,9 +20,10 @@ RUN npm install -g gulp
 
 COPY . /app
 
-WORKDIR app
-
+COPY default.conf /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/nginx.conf
+
+WORKDIR app
 
 RUN gulp dev
 
